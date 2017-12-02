@@ -80,6 +80,9 @@
 		@yield('content')
 	</div>
 
+	<!-- Injecting Laravel route into javascript -->
+	@routes
+
 	<!-- Scripts -->
 	<script src="{{ asset('js/app.js') }}"></script>
 </body>
