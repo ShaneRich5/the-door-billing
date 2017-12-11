@@ -18,6 +18,10 @@ window.Vue = require('vue');
 Vue.component('category-form', require('./components/CategoryForm.vue'));
 Vue.component('quick-delete-form', require('./components/QuickDeleteForm.vue'));
 
+Vue.component('tag-container', require('./components/tags/TagContainer'));
+Vue.component('tag-list', require('./components/tags/TagList'));
+Vue.component('tag-form', require('./components/tags/TagForm'));
+
 const app = new Vue({
     el: '#app'
 });

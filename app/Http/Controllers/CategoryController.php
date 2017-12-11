@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -43,10 +44,11 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        if ($category = Category::create($request->only('name', 'description')));
+        if ($category = Category::create($request->only('name', 'description', 'catering_maximum')));
         {
-            return redirect()->route('categories.index');
+            return $category;
         }
+
         return [
             'status' => 'error',
         ];
@@ -83,6 +85,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        $category->name = $request->input('name');
+        $category->description = $request->input('description');
+        $category->catering_maximum = $request->input('catering_maximum');
+
+        $category->save();
         return $category;
     }
 

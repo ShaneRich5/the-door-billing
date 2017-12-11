@@ -17,7 +17,8 @@
 						{{ session('status') }}
 					</div>
 					@endif
-					{{ $category->description }}
+					Description: {{ $category->description }}</br>
+					Catering Maximum: {{ $category->catering_maximum }}
 				</div>
 			</div>
 		</div>

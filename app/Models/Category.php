@@ -9,7 +9,12 @@ class Category extends Model
 {
     use Sluggable;
 
-    protected $fillable = ['name', 'slug', 'description', 'catering_maximum'];
+    protected $fillable = ['name', 'slug', 'description', 'catering_limit'];
+
+    public function menuItems()
+    {
+        return $this->hasMany('App\Models\MenuItem');
+    }
 
     /**
      * Return the sluggable configuration array for this model.

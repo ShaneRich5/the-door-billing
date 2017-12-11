@@ -6,6 +6,11 @@
 			<small id="emailHelp" class="form-text text-muted">{{ categoryUrl.url() }}/{{ slug }}</small>
 		</div>
 		<div class="form-group">
+			<label for="catering-maximum">Maximum catering choices</label>
+			<input v-model="cateringMaximum" type="number" class="form-control"
+				id="catering-maximum" placeholder="Enter a number 0 or greater" aria-label="Maximum catering">
+		</div>
+		<div class="form-group">
 			<label for="category-description">Description</label>
 			<textarea v-model="description" class="form-control" id="category-description" rows="3"></textarea>
 		</div>
@@ -19,9 +24,7 @@ export default {
 	props: {
 		shouldUpdate: {
 			type: Boolean,
-			default() {
-				return false;
-			},
+			default: () => false,
 		},
 		category: {
 			type: Object,
@@ -33,6 +36,7 @@ export default {
 	data() {
 		return {
 			name: 'name' in this.category ? this.category.name : '',
+			cateringMaximum: 'catering_maximum' in this.category ? this.category['catering_maximum'] : 0,
 			description: 'description' in this.category ? this.category.description : '',
 			categoryUrl: window.route('categories.index'),
 		};
@@ -44,10 +48,11 @@ export default {
 	},
 	methods: {
 		onSubmit() {
-			const url = shouldUpdate ? route('categories.update') : route('categories.store');
-			const method = shouldUpdate ? 'put' : 'post';
-			const data = { name: this.name, description: this.description };
+			const url = this.shouldUpdate ? route('categories.update', this.category.id) : route('categories.store');
+			const method = this.shouldUpdate ? 'put' : 'post';
+			const data = { name: this.name, description: this.description, cateringMaximum: this.cateringMaximum };
 			axios({ method, url, data }).then((response) => {
+				console.log(response.data);
 				window.location.href = this.categoryUrl;
 			}, console.error);
 		},
