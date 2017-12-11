@@ -46,7 +46,7 @@ class MenuSeeder extends Seeder
         foreach($names as $name) {
             $menuItem = MenuItem::create(['name' => $name, 'category_id' => $category->id]);
             if ($tag) {
-                $menuItem->tags()->attach($menuItem);
+                $menuItem->tags()->attach($tag);
             }
         }
     }

@@ -19,7 +19,6 @@ class CreateMenuItemTagTable extends Migration
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
             $table->foreign('menu_item_id')->references('id')->on('menu_items')->onDelete('cascade');
             $table->primary(['tag_id', 'menu_item_id']);
-            $table->timestamps();
         });
     }
 
