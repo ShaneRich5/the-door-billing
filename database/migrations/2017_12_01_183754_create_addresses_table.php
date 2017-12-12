@@ -19,6 +19,8 @@ class CreateAddressesTable extends Migration
             $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('postal_code')->nullable();
+            $table->integer('location_id')->unsigned()->nullable();
+            $table->foreign('location_id')->references('id')->on('locations');
             $table->integer('coordinate_id')->unsigned()->nullable();
             $table->foreign('coordinate_id')->references('id')->on('coordinates');
             $table->timestamps();

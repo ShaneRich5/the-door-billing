@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCategoryMenuItemTable extends Migration
+class CreateMenuItemOrderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateCategoryMenuItemTable extends Migration
      */
     public function up()
     {
-        Schema::create('category_menu_item', function (Blueprint $table) {
-            $table->integer('category_id')->unsigned();
+        Schema::create('menu_item_order', function (Blueprint $table) {
+            $table->integer('order_id')->unsigned();
             $table->integer('menu_item_id')->unsigned();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->foreign('menu_item_id')->references('id')->on('menu_items')->onDelete('cascade');
-            $table->primary(['category_id', 'menu_item_id']);
+            $table->primary(['order_id', 'menu_item_id']);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateCategoryMenuItemTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('category_menu_item');
+        Schema::dropIfExists('menu_item_order');
     }
 }

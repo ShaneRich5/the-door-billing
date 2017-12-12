@@ -17,8 +17,7 @@ class CreateLocationsTable extends Migration
             $table->increments('id');
             $table->string('owner')->nullable();
             $table->string('name');
-            $table->integer('address_id')->unsigned();
-            $table->foreign('address_id')->references('id')->on('addresses');
+            $table->string('phone')->nullable();
             $table->timestamps();
         });
     }

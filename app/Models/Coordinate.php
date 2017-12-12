@@ -14,4 +14,9 @@ class Coordinate extends Model
     protected $fillable = [
         'latitude', 'longitude'
     ];
+
+    public function address()
+    {
+        return $this->hasOne('App\Models\Address');
+    }
 }

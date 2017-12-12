@@ -24,6 +24,11 @@ class MenuItem extends Model
         return $this->belongsTo('App\Models\Category');
     }
 
+    public function orders()
+    {
+        return $this->belongsToMany('App\Models\Order');
+    }
+
     /**
      * Return the sluggable configuration array for this model.
      *

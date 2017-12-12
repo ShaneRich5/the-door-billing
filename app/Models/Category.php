@@ -9,7 +9,7 @@ class Category extends Model
 {
     use Sluggable;
 
-    protected $fillable = ['name', 'slug', 'description', 'catering_limit'];
+    protected $fillable = ['name', 'slug', 'description', 'image', 'catering_limit'];
 
     public function menuItems()
     {

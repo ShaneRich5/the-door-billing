@@ -25,4 +25,5 @@ Route::namespace('Api')->group(function() {
     Route::post('register', 'RegisterController@register');
     Route::post('password/reset', 'ResetPasswordController@reset');
     Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
+    Route::get('menus/catering', 'MenuController@catering');
 });
