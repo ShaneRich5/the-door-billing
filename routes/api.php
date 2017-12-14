@@ -18,11 +18,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('Api')->group(function() {
+    Route::post('register', 'RegisterController@register');
+    // Route::post('register', function() {
+    //     return [
+    //         'success' => true
+    //     ];
+    // });
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
-    Route::post('register', 'RegisterController@register');
     Route::post('password/reset', 'ResetPasswordController@reset');
     Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
     Route::get('menus/catering', 'MenuController@catering');

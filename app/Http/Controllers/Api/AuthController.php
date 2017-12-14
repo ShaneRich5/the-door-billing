@@ -6,6 +6,7 @@ use JWTAuth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\LoginRequest;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
@@ -35,6 +36,34 @@ class AuthController extends Controller
         }
 
         return $this->respondWithToken($token);
+    }
+
+
+    public function register(RegisterRequest $request)
+    {
+        $data = $request->only('first_name', 'last_name', 'email', 'password', 'phone');
+        $user = User::create($data);
+
+        if (empty($user)) {
+            return response()->json([
+                'message' => 'Unable to create account'
+            ], 300);
+        }
+
+        if ( ! $token = $this->guard()->attempt($credentials)) {
+            return response()->json([
+                'message' => 'Account created! Please login',
+            ], 300);
+        }
+
+        return [
+            'user' => $user,
+            'token' => [
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => $this->guard()->factory()->getTTL() * 60,
+            ],
+        ];
     }
 
     /**

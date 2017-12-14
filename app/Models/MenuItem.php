@@ -11,6 +11,20 @@ class MenuItem extends Model
 
     protected $fillable = ['name', 'slug', 'description', 'image', 'category_id'];
 
+    protected $appends = ['tags'];
+
+    public function getTagsAttribute()
+    {
+        $tags = $this->tags()->get()->map(function($tag) {
+            return [
+                'id' => $tag->id,
+                'name' => $tag->name
+            ];
+        });
+
+        return $tags;
+    }
+
     /**
      * The tag that belong to the menu items.
      */
