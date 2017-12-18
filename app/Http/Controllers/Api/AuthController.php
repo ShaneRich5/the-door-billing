@@ -109,11 +109,11 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
-        return response()->json([
+        return [
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => $this->guard()->factory()->getTTL() * 60
-        ]);
+        ];
     }
 
     /**
