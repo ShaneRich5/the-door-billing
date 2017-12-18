@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Delivery extends Model
 {
-    protected $fillable = ['attentance'];
+    protected $fillable = ['attendance', ''];
 
     public function order()
     {

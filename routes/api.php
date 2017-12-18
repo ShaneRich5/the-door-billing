@@ -19,11 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::namespace('Api')->group(function() {
     Route::post('register', 'RegisterController@register');
-    // Route::post('register', function() {
-    //     return [
-    //         'success' => true
-    //     ];
-    // });
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
@@ -31,4 +26,7 @@ Route::namespace('Api')->group(function() {
     Route::post('password/reset', 'ResetPasswordController@reset');
     Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
     Route::get('menus/catering', 'MenuController@catering');
+
+    Route::resource('orders', 'OrderController', ['except' => ['create', 'edit']]);
+    Route::resource('orders.menu-items', 'OrderMenuItemController', ['except' => ['create', 'edit']]);
 });

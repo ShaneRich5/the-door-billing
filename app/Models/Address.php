@@ -24,4 +24,14 @@ class Address extends Model
     {
         return $this->belongsTo('App\Models\Coordinate');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany('App\Models\User');
+    }
+
+    public function order()
+    {
+        return $this->hasOne('App\Models\Order', 'billing_id', 'id');
+    }
 }

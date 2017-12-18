@@ -18,6 +18,11 @@ class CreateOrdersTable extends Migration
             $table->string('status')->default('draft');
             $table->string('type');
             $table->text('note')->nullable();
+            $table->integer('total')->default(0);
+            $table->integer('billing_address_id')->unsigned()->nullable();
+            $table->foreign('billing_address_id')->references('id')->on('addresses')->onDelete('cascade');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

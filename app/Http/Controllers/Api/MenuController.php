@@ -12,11 +12,8 @@ class MenuController extends Controller
 {
     public function catering()
     {
-        return MenuItem::first();
         return [
-            'menu_items' => MenuItem::all(),
-            'categories' => Category::all(),
-            'tags' => Tag::all()
+            'categories' => Category::with('menuItems')->get(),
         ];
     }
 }

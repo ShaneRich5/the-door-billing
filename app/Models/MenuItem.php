@@ -15,14 +15,19 @@ class MenuItem extends Model
 
     public function getTagsAttribute()
     {
-        $tags = $this->tags()->get()->map(function($tag) {
-            return [
-                'id' => $tag->id,
-                'name' => $tag->name
-            ];
-        });
+        // $tags = $this->tags()->get()->map(function($tag) {
+        //     return [
+        //         'id' => $tag->id,
+        //         'name' => $tag->name
+        //     ];
+        // });
 
-        return $tags;
+        return $this->tags()->get();
+    }
+
+    public function getCategoryAttribute()
+    {
+        return $this->category()->get();
     }
 
     /**
