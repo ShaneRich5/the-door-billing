@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UserController');
-Route::resource('orders', 'OrderController');
-Route::resource('menu-items', 'MenuItemController');
+// Route::resource('orders', 'OrderController');
+// Route::resource('menu-items', 'MenuItemController');
 Route::resource('categories', 'CategoryController');
 Route::resource('tags', 'TagController');

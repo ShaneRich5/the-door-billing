@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::namespace('Api')->group(function() {
+Route::group(['namespace' => 'Api'] ,function() {
     Route::post('register', 'RegisterController@register');
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
@@ -27,6 +27,6 @@ Route::namespace('Api')->group(function() {
     Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
     Route::get('menus/catering', 'MenuController@catering');
 
-    Route::resource('orders', 'OrderController', ['except' => ['create', 'edit']]);
+    Route::resource('orders', 'OrderController', ['except' => ['create', 'edit']])->middleware('jwt.auth');
     Route::resource('orders.menu-items', 'OrderMenuItemController', ['except' => ['create', 'edit']]);
 });
