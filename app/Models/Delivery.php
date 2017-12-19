@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Delivery extends Model
 {
-    protected $fillable = ['attendance', ''];
+    protected $fillable = ['attendance', 'deliver_by', 'cost'];
+
+    protected $appends = ['location'];
 
     public function order()
     {
@@ -16,5 +18,10 @@ class Delivery extends Model
     public function location()
     {
         return $this->belongsTo('App\Models\Location');
+    }
+
+    public function getLocationAttribute()
+    {
+        return $this->location()->get();
     }
 }

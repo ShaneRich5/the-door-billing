@@ -17,6 +17,7 @@ class CreateDeliveriesTable extends Migration
             $table->increments('id');
             $table->integer('attendance')->default(0);
             $table->integer('cost')->default(0);
+            $table->datetime('deliver_by')->nullable();
             $table->integer('order_id')->unsigned();
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->integer('location_id')->unsigned();

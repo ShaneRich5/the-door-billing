@@ -43,7 +43,12 @@ class OrderController extends Controller
         $user = $this->guard()->user();
         // $token = JWTAuth::fromUser($user);
 
-        $orders = $user->orders;
+        $orders = $user->orders->map(function($order) {
+            return [
+                'order' => $order,
+                'delivery' => $order->delivery,
+            ];
+        });
 
         return [
             'orders' => $orders,
@@ -59,52 +64,42 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        if ( ! $user = Auth::guard('api')->user())
-        {
-            return response()->json([
-                'message' => 'Invalid token provided',
-            ], 300);
-        }
+        $user = Auth::guard('api')->user();
 
+        // Get nested billing address
         $billingData = collect($request->only('billing.street', 'billing.city', 'billing.state', 'billing.postal_code'));
 
+        // Extract nested values and create address
         $billingAddress = Address::create($billingData['billing']);
 
+        // Attach billing address to user
         $user->addresses()->attach($billingAddress->id);
 
-        $order = new Order($request->only('type', 'status'));
+        // Create order with defaults
+        $order = new Order(['type' => 'delivery', 'status' => 'draft']);
         $order->billing_id = $billingAddress->id;
-
         $order = $user->orders()->save($order);
 
-        if ($order->type == 'delivery')
-        {
-            $deliverAddress = collect($request->only('delivery.street', 'delivery.city', 'delivery.state', 'delivery.postal_code'));
-            $address = Address::create($deliverAddress['delivery']);
+        $deliverAddressData = collect($request->only('delivery.street', 'delivery.city', 'delivery.state', 'delivery.postal_code'));
+        $deliverAddress = Address::create($deliverAddressData['delivery']);
 
-            $location = new Location($request->only('owner', 'name', 'phone'));
-            $location->address_id = $address->id;
-            $location->save();
-            // $location->address()->associate($address);
+        $location = new Location($request->only('location.owner', 'location.name', 'location.phone')['location']);
+        $location->address_id = $address->id;
+        $location->save();
 
-            $delivery = new Delivery($request->only('attendance'));
-            $delivery->order_id = $order->id;
-            $delivery->location_id = $location->id;
-            $delivery->save();
-
-            return [
-                'order' => $order,
-                'location' => $location,
-                'address' => $address,
-                'delivery' => $delivery,
-                'billing' => $billingAddress,
-            ];
-        }
+        $delivery = new Delivery($request->only('details.attendance', 'details.cost', 'details.deliver_by')['details']);
+        $delivery->order_id = $order->id;
+        $delivery->location_id = $location->id;
+        $delivery->save();
 
         return [
             'order' => $order,
+            'location' => $location,
+            'deliver_address' => $deliverAddress,
+            'delivery' => $delivery,
             'billing' => $billingAddress,
         ];
+
     }
 
     /**
@@ -116,9 +111,9 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         return [
-            'count' => $order->menuItems->count(),
             'menu_items' => $order->menuItems,
             'order' => $order,
+            'delivery' => $delivery,
         ];
     }
 
@@ -132,7 +127,52 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $user = Auth::guard('api')->user();
+
+        $billingAddress = $order->billing;
+
+        if (empty($billingAddress)) {
+            $billingAddress = $order->billing()->create(new Address);
+        }
+
+        // Get nested billing address
+        $billingData = collect($request->only('billing.street', 'billing.city', 'billing.state', 'billing.postal_code'));
+
+        // Extract nested values and create address
+        $billingAddress->save($billingData['billing']);
+
+        // Attach billing address to user
+        $user->addresses()->attach($billingAddress->id);
+
+        $locationData = collect($request->only('location.owner', 'location.name', 'location.phone'))['location'];
+        $deliverAddressData = collect($request->only('delivery.street', 'delivery.city', 'delivery.state', 'delivery.postal_code'))['delivery'];
+
+        $delivery = $order->delivery;
+        $location = $delivery->location;
+
+        if (empty($delivery)) {
+            $delivery = new Delivery;
+        }
+
+        if (empty($location)) {
+            $location = new Location;
+        }
+
+        $location = $location->save($locationData);
+
+        $delivery->order_id = $order->id;
+        $delivery->location_id = $location->id;
+        $delivery->save($deliverAddressData);
+
+        $deliverAddress = $location->address()->save($deliverAddressData);
+
+        return [
+            'order' => $order,
+            'location' => $location,
+            'deliver_address' => $deliverAddress,
+            'delivery' => $delivery,
+            'billing' => $billingAddress,
+        ];
     }
 
     /**

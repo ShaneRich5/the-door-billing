@@ -10,6 +10,13 @@ class Order extends Model
         'status', 'type', 'note', 'total'
     ];
 
+    protected $appends = ['billing'];
+
+    public function getBillingAttribute()
+    {
+        return $this->billing();
+    }
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');
