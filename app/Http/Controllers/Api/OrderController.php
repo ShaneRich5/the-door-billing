@@ -77,14 +77,14 @@ class OrderController extends Controller
 
         // Create order with defaults
         $order = new Order(['type' => 'delivery', 'status' => 'draft']);
-        $order->billing_id = $billingAddress->id;
+        $order->billing_address_id = $billingAddress->id;
         $order = $user->orders()->save($order);
 
         $deliverAddressData = collect($request->only('delivery.street', 'delivery.city', 'delivery.state', 'delivery.postal_code'));
         $deliverAddress = Address::create($deliverAddressData['delivery']);
 
         $location = new Location($request->only('location.owner', 'location.name', 'location.phone')['location']);
-        $location->address_id = $address->id;
+        $location->address_id = $deliverAddress->id;
         $location->save();
 
         $delivery = new Delivery($request->only('details.attendance', 'details.cost', 'details.deliver_by')['details']);
@@ -136,35 +136,36 @@ class OrderController extends Controller
         }
 
         // Get nested billing address
-        $billingData = collect($request->only('billing.street', 'billing.city', 'billing.state', 'billing.postal_code'));
+        $billingData = $request->only('billing.street', 'billing.city', 'billing.state', 'billing.postal_code');
 
         // Extract nested values and create address
-        $billingAddress->save($billingData['billing']);
+        $billingAddress =  $billingAddress->update($billingData['billing']);
 
         // Attach billing address to user
-        $user->addresses()->attach($billingAddress->id);
+        // $user->addresses()->attach($billingAddress->id);
 
         $locationData = collect($request->only('location.owner', 'location.name', 'location.phone'))['location'];
         $deliverAddressData = collect($request->only('delivery.street', 'delivery.city', 'delivery.state', 'delivery.postal_code'))['delivery'];
 
         $delivery = $order->delivery;
-        $location = $delivery->location;
+        $location = $delivery->location->first();
 
         if (empty($delivery)) {
             $delivery = new Delivery;
         }
 
+        $location->update($locationData);
+
         if (empty($location)) {
-            $location = new Location;
+            $location = Location::create($locationData);
+        } else {
+            $location->fill($locationData)->save();
         }
-
-        $location = $location->save($locationData);
-
         $delivery->order_id = $order->id;
         $delivery->location_id = $location->id;
         $delivery->save($deliverAddressData);
 
-        $deliverAddress = $location->address()->save($deliverAddressData);
+        $deliverAddress = $location->address()->update($deliverAddressData);
 
         return [
             'order' => $order,

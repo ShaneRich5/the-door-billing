@@ -14,7 +14,7 @@ class Order extends Model
 
     public function getBillingAttribute()
     {
-        return $this->billing();
+        return $this->billing()->first();
     }
 
     public function user()
@@ -24,7 +24,7 @@ class Order extends Model
 
     public function billing()
     {
-        return $this->belongsTo('App\Models\Address', 'id', 'billing_id');
+        return $this->belongsTo('App\Models\Address', 'billing_address_id', 'id');
     }
 
     public function menuItems()
