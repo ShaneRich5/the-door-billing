@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use Log;
 use JWTAuth;
+use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Address;
 use App\Models\Location;
@@ -87,7 +89,15 @@ class OrderController extends Controller
         $location->address_id = $deliverAddress->id;
         $location->save();
 
-        $delivery = new Delivery($request->only('details.attendance', 'details.cost', 'details.deliver_by')['details']);
+        $deliveryOptions = $request->only('details.attendance', 'details.cost', 'details.deliver_by')['details'];
+
+        Log::info('user deliver_by before formatting: '. $deliveryOptions['deliver_by']);
+
+        $deliveryOptions['deliver_by'] = Carbon::parse($deliveryOptions['deliver_by'])->toDateTimeString();
+
+        Log::info('user deliver_by after formatting: '. $deliveryOptions['deliver_by']);
+
+        $delivery = new Delivery($deliveryOptions);
         $delivery->order_id = $order->id;
         $delivery->location_id = $location->id;
         $delivery->save();
