@@ -46,10 +46,6 @@ class OrderController extends Controller
         // $token = JWTAuth::fromUser($user);
 
         $orders = $user->orders->map(function($order) {
-            $delivery = $order->delivery;
-            $location = $delivery->location;
-            $address = $location->address;
-
             return [
                 'order' => $order,
                 'delivery' => $order->delivery,

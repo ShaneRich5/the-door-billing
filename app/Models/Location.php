@@ -10,8 +10,15 @@ class Location extends Model
         'owner', 'name', 'phone', 'address_id'
     ];
 
+    protected $appends = ['address'];
+
     public function address()
     {
         return $this->belongsTo('App\Models\Address');
+    }
+
+    public function getAddressAttribute()
+    {
+        return $this->address()->get();
     }
 }
