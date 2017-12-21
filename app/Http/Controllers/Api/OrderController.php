@@ -52,9 +52,7 @@ class OrderController extends Controller
             ];
         });
 
-        return [
-            'orders' => $orders,
-        ];
+        return $orders;
     }
 
 
