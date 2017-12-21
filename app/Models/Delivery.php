@@ -22,6 +22,6 @@ class Delivery extends Model
 
     public function getLocationAttribute()
     {
-        return $this->location()->get();
+        return $this->location()->irst();
     }
 }
