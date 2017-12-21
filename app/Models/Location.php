@@ -19,6 +19,6 @@ class Location extends Model
 
     public function getAddressAttribute()
     {
-        return $this->address()->get();
+        return $this->address()->first();
     }
 }
