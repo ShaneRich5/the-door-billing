@@ -170,6 +170,7 @@ return [
         Tightenco\Ziggy\ZiggyServiceProvider::class,
         // Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Oureastudios\Laravel\BraintreeServiceProvider::class,
 
         /*
          * Application Service Providers...

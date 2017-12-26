@@ -11,7 +11,8 @@
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "tightenco/ziggy": "^0.5.0",
-        "tymon/jwt-auth": "dev-develop"
+        "tymon/jwt-auth": "dev-develop",
+        "oureastudios/laravel5-braintree": "dev-master"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

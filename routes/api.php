@@ -29,4 +29,7 @@ Route::group(['namespace' => 'Api'] ,function() {
 
     Route::resource('orders', 'OrderController', ['except' => ['create', 'edit']])->middleware('jwt.auth');
     Route::resource('orders.menu-items', 'OrderMenuItemController', ['except' => ['create', 'edit']]);
+
+    Route::get('payment/nonce', 'OrderPaymentController@generatePaymentToken');
+    Route::post('orders/{id}/pay', 'OrderPaymentController@pay');
 });

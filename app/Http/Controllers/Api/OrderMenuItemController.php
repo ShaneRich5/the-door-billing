@@ -32,13 +32,17 @@ class OrderMenuItemController extends Controller
      */
     public function store(Request $request, Order $order)
     {
-        $item = $request->only('menu_item.id');
-        $id = $item['menu_item']['id'];
 
-        $result = $order->menuItems()->attach($id);
+        $items = $request->only('menu_items');
+        $ids = $items['menu_items'];
+
+        $menuItems = MenuItem::find($ids);
+
+        $order->menuItems()->sync($ids);
 
         return [
-            'menu_items' => $order->menuItems,
+            'menu_items' => $order->menuItems()->get(),
+            'order' => $order
         ];
     }
 

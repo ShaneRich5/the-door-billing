@@ -89,11 +89,11 @@ class OrderController extends Controller
 
         $deliveryOptions = $request->only('details.attendance', 'details.cost', 'details.deliver_by')['details'];
 
-        Log::info('user deliver_by before formatting: '. $deliveryOptions['deliver_by']);
+        Log::info('user deliver_by before formatting: ' . $deliveryOptions['deliver_by']);
 
         $deliveryOptions['deliver_by'] = Carbon::parse($deliveryOptions['deliver_by'])->toDateTimeString();
 
-        Log::info('user deliver_by after formatting: '. $deliveryOptions['deliver_by']);
+        Log::info('user deliver_by after formatting: ' . $deliveryOptions['deliver_by']);
 
         $delivery = new Delivery($deliveryOptions);
         $delivery->order_id = $order->id;
@@ -118,6 +118,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+        $delivery = $order->delivery;
+
         return [
             'menu_items' => $order->menuItems,
             'order' => $order,
