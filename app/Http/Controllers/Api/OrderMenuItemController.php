@@ -37,7 +37,7 @@ class OrderMenuItemController extends Controller
         $items = $request->only('menu_items');
         $ids = $items['menu_items'];
 
-        Log::info('menu items: ' . $ids);
+        Log::info('menu items: ' . implode(', ', $ids));
 
         $menuItems = MenuItem::find($ids);
 
