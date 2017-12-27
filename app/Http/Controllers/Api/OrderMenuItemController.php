@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Log;
 use App\Models\MenuItem;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -35,6 +36,8 @@ class OrderMenuItemController extends Controller
 
         $items = $request->only('menu_items');
         $ids = $items['menu_items'];
+
+        Log::info('menu items: ' . $ids);
 
         $menuItems = MenuItem::find($ids);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Log;
 use Braintree_ClientToken;
 use Braintree_Transaction;
 use Illuminate\Http\Request;
@@ -44,6 +45,9 @@ class OrderPaymentController extends Controller
         ];
 
         $result = Braintree_Transaction::sale($transaction);
+
+        Log::info($result);
+
 
         return [
             'menu_count' => $menuItemCount,
