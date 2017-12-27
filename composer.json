@@ -4,6 +4,12 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ShaneRich5/laravel5-braintree"
+        }
+    ],
     "require": {
         "php": ">=7.0.0",
         "cviebrock/eloquent-sluggable": "4.3",

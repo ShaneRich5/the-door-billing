@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "71ba3cfb541072ee6c7f58e30038a592",
+    "content-hash": "5cf906cde0bae39488cbe6e3f79984c9",
     "packages": [
         {
             "name": "braintree/braintree_php",
-            "version": "2.40.1",
+            "version": "3.26.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/braintree/braintree_php.git",
-                "reference": "5d4d2a4aab8690d0e7dbca3f168c9b6575f856de"
+                "reference": "7f66ed17f38efd45904f920695b02603b091bae6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/braintree/braintree_php/zipball/5d4d2a4aab8690d0e7dbca3f168c9b6575f856de",
-                "reference": "5d4d2a4aab8690d0e7dbca3f168c9b6575f856de",
+                "url": "https://api.github.com/repos/braintree/braintree_php/zipball/7f66ed17f38efd45904f920695b02603b091bae6",
+                "reference": "7f66ed17f38efd45904f920695b02603b091bae6",
                 "shasum": ""
             },
             "require": {
@@ -25,9 +25,8 @@
                 "ext-dom": "*",
                 "ext-hash": "*",
                 "ext-openssl": "*",
-                "ext-simplexml": "*",
                 "ext-xmlwriter": "*",
-                "php": ">=5.2.1"
+                "php": ">=5.4.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "3.7.*"
@@ -35,7 +34,10 @@
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Braintree": "lib"
+                    "Braintree": "lib/"
+                },
+                "psr-4": {
+                    "Braintree\\": "lib/Braintree"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -49,7 +51,7 @@
                 }
             ],
             "description": "Braintree PHP Client Library",
-            "time": "2015-10-28T18:49:43+00:00"
+            "time": "2017-12-14T00:08:17+00:00"
         },
         {
             "name": "cocur/slugify",
@@ -580,16 +582,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.27",
+            "version": "v5.5.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "b4fb6eeb227b7327b4ca7f92263b693ec9ac9875"
+                "reference": "cfafae1f2043208390a7c984e3070696f4969605"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/b4fb6eeb227b7327b4ca7f92263b693ec9ac9875",
-                "reference": "b4fb6eeb227b7327b4ca7f92263b693ec9ac9875",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/cfafae1f2043208390a7c984e3070696f4969605",
+                "reference": "cfafae1f2043208390a7c984e3070696f4969605",
                 "shasum": ""
             },
             "require": {
@@ -710,7 +712,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-12-20T15:43:48+00:00"
+            "time": "2017-12-26T16:24:40+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -1098,16 +1100,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v3.1.2",
+            "version": "v3.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "08131e7ff29de6bb9f12275c7d35df71f25f4d89"
+                "reference": "579f4ce846734a1cf55d6a531d00ca07a43e3cda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/08131e7ff29de6bb9f12275c7d35df71f25f4d89",
-                "reference": "08131e7ff29de6bb9f12275c7d35df71f25f4d89",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/579f4ce846734a1cf55d6a531d00ca07a43e3cda",
+                "reference": "579f4ce846734a1cf55d6a531d00ca07a43e3cda",
                 "shasum": ""
             },
             "require": {
@@ -1145,24 +1147,24 @@
                 "parser",
                 "php"
             ],
-            "time": "2017-11-04T11:48:34+00:00"
+            "time": "2017-12-26T14:43:21+00:00"
         },
         {
             "name": "oureastudios/laravel5-braintree",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/oureastudios/laravel5-braintree.git",
-                "reference": "16ebcc610d9d0efef8a4ec28c19c8123586f10c2"
+                "url": "https://github.com/ShaneRich5/laravel5-braintree.git",
+                "reference": "3806a32f6c45e48d710c6f7ebfe9948ef7062de5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oureastudios/laravel5-braintree/zipball/16ebcc610d9d0efef8a4ec28c19c8123586f10c2",
-                "reference": "16ebcc610d9d0efef8a4ec28c19c8123586f10c2",
+                "url": "https://api.github.com/repos/ShaneRich5/laravel5-braintree/zipball/3806a32f6c45e48d710c6f7ebfe9948ef7062de5",
+                "reference": "3806a32f6c45e48d710c6f7ebfe9948ef7062de5",
                 "shasum": ""
             },
             "require": {
-                "braintree/braintree_php": "2.x",
+                "braintree/braintree_php": "3.x",
                 "illuminate/support": "5.x",
                 "php": ">=5.3.0"
             },
@@ -1175,7 +1177,6 @@
                     "Oureastudios\\Laravel": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1198,7 +1199,10 @@
                 "braintree",
                 "braintree laravel 5"
             ],
-            "time": "2015-05-03T17:47:01+00:00"
+            "support": {
+                "source": "https://github.com/ShaneRich5/laravel5-braintree/tree/dev-master"
+            },
+            "time": "2017-12-27T06:50:41+00:00"
         },
         {
             "name": "paragonie/random_compat",
