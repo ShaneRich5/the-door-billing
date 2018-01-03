@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use App\Models\FirebaseToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\RegisterRequest;
@@ -24,6 +25,17 @@ class RegisterController extends Controller
             return response()->json([
                 'message' => 'Unable to create account'
             ], 300);
+        }
+
+        if ($request->has('device_identifier') && $request->has('device_token')) {
+            $firebaseToken = new FirebaseToken($request->only('device_identifier', 'device_token'));
+            $firebaseToken->user_id = $user->id;
+
+            if ($request->has('device_type')) {
+                $firebaseToken->device_type = $request->input('device_type');
+            }
+
+            $firebaseToken->save();
         }
 
         if ( ! $token = $this->guard()->attempt($request->only('email', 'password'))) {

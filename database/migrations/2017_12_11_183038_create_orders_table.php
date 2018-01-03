@@ -17,7 +17,10 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->string('status')->default('draft');
             $table->string('type');
+            $table->string('invoice')->nullable();
             $table->text('note')->nullable();
+            $table->integer('subtotal')->default(0);
+            $table->integer('tax')->default(0);
             $table->integer('total')->default(0);
             $table->integer('billing_address_id')->unsigned()->nullable();
             $table->foreign('billing_address_id')->references('id')->on('addresses')->onDelete('cascade');

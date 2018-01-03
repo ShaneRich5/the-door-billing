@@ -32,4 +32,5 @@ Route::group(['namespace' => 'Api'] ,function() {
 
     Route::get('payment/nonce', 'OrderPaymentController@generatePaymentToken');
     Route::post('orders/{id}/pay', 'OrderPaymentController@pay');
+    Route::get('orders/{id}/invoice', 'OrderController@invoice');
 });

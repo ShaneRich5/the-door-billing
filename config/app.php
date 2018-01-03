@@ -168,9 +168,10 @@ return [
          * Package Service Providers...
          */
         Tightenco\Ziggy\ZiggyServiceProvider::class,
-        // Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Oureastudios\Laravel\BraintreeServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+        LaravelFCM\FCMServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -229,8 +230,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'FCM' => LaravelFCM\Facades\FCM::class,
     ],
 
 ];

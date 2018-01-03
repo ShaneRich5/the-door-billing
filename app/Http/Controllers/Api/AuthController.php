@@ -34,6 +34,17 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        if ($request->has('device_identifier') && $request->has('device_token')) {
+            $firebaseToken = new FirebaseToken($request->only('device_identifier', 'device_token'));
+            $firebaseToken->user_id = $this->guard()->user()->id;
+
+            if ($request->has('device_type')) {
+                $firebaseToken->device_type = $request->input('device_type');
+            }
+
+            $firebaseToken->save();
+        }
+
         return [
             'user' => $this->guard()->user(),
             'token' => $this->respondWithToken($token)

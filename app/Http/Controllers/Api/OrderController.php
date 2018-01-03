@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Log;
+use PDF;
 use JWTAuth;
 use Carbon\Carbon;
 use App\Models\Order;
@@ -55,6 +56,33 @@ class OrderController extends Controller
         return $orders;
     }
 
+    public function invoice($id)
+    {
+        $user = Auth::guard('api')->user();
+        $order = Order::find($id);
+        $billingAddress = $order->billing;
+        $delivery = $order->delivery;
+        $deliveryLocation = $delivery->location;
+        $deliveryAddress = $deliveryLocation->address;
+        $menuItems = $order->menuItems;
+
+        $invoiceNumber = (string) $order->id;
+
+        $data = [
+            'invoice_number' => $invoiceNumber,
+            'user' => $user,
+            'order' => $order,
+            'menu_items' => $menuItems,
+            'billing_address' => $billingAddress,
+            'delivery' => $delivery,
+            'delivery_location' => $deliveryLocation,
+            'delivery_address' => $deliveryAddress,
+        ];
+
+        return PDF::loadView('pdf.invoice', $data)
+            ->save('invoices/' . $order->id . '.pdf')
+            ->stream($order->id . '.pdf');
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -88,6 +116,13 @@ class OrderController extends Controller
         $location->save();
 
         $deliveryOptions = $request->only('details.attendance', 'details.cost', 'details.deliver_by')['details'];
+
+        $attendance = $deliveryOptions['attendance'];
+
+        $order->subtotal = 18.50 * $attendance;
+        $order->tax = $order->subtotal * 8.875;
+        $order->total = $order->subtotal + $order->tax;
+        $order->save();
 
         Log::info('user deliver_by before formatting: ' . $deliveryOptions['deliver_by']);
 

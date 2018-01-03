@@ -24,3 +24,4 @@ Route::resource('users', 'UserController');
 // Route::resource('menu-items', 'MenuItemController');
 Route::resource('categories', 'CategoryController');
 Route::resource('tags', 'TagController');
+Route::get('test', 'HomeController@test');

@@ -17,7 +17,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'phone'
+        'first_name', 'last_name', 'email', 'password', 'phone', 'braintree_id'
     ];
 
     /**
@@ -57,6 +57,11 @@ class User extends Authenticatable implements JWTSubject
     public function orders()
     {
         return $this->hasMany('App\Models\Order');
+    }
+
+    public function firebaseTokens()
+    {
+        return $this->hasMany('App\Models\FirebaseToken');
     }
 
     public function addresses()

@@ -7,10 +7,41 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'status', 'type', 'note', 'total'
+        'status', 'type', 'note', 'subtotal', 'tax', 'total', 'invoice'
     ];
 
     protected $appends = ['billing'];
+
+    public function getTaxAttribute($value)
+    {
+        return $value / 100;
+    }
+
+    public function getTotalAttribute($value)
+    {
+        return $value / 100;
+    }
+
+    public function getSubtotalAttribute($value)
+    {
+        return $value / 100;
+    }
+
+    public function setTaxAttribute($value)
+    {
+        $this->attributes['tax'] = ceil($value * 100);
+    }
+
+    public function setTotalAttribute($value)
+    {
+        $this->attributes['total'] = ceil($value * 100);
+    }
+
+    public function setSubtotalAttribute($value)
+    {
+        $this->attributes['subtotal'] = ceil($value * 100);
+    }
+
 
     public function getBillingAttribute()
     {
