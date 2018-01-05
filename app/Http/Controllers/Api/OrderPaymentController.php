@@ -67,10 +67,12 @@ class OrderPaymentController extends Controller
             $order->status = 'paid';
             $order->save();
 
-            // $this->notifyUser($order, $user);
+            $delivery = $order->delivery;
 
             return [
-                'success' => true
+                'menu_items' => $order->menuItems,
+                'order' => $order,
+                'delivery' => $delivery,
             ];
         } else {
             return [

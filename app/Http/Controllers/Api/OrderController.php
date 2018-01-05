@@ -120,8 +120,8 @@ class OrderController extends Controller
         $attendance = $deliveryOptions['attendance'];
 
         $order->subtotal = 18.50 * $attendance;
-        $order->tax = $order->subtotal * 8.875;
-        $order->total = $order->subtotal + $order->tax;
+        $order->tax = $order->subtotal * 8.875 / 100;
+        $order->total = $order->subtotal + $order->tax + $delivery->cost;
         $order->save();
 
         Log::info('user deliver_by before formatting: ' . $deliveryOptions['deliver_by']);
