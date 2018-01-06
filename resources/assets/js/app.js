@@ -21,6 +21,7 @@ Vue.component('quick-delete-form', require('./components/QuickDeleteForm.vue'));
 Vue.component('tag-container', require('./components/tags/TagContainer'));
 Vue.component('tag-list', require('./components/tags/TagList'));
 Vue.component('tag-form', require('./components/tags/TagForm'));
+Vue.component('printer-settings', require('./components/printer/PrinterSettings'));
 
 const app = new Vue({
     el: '#app'

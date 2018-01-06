@@ -68,7 +68,7 @@
 			<h2>Deliver By</h2>
 		</div>
 		<div class="half">
-			<p>{{ $invoice_number }}</p>
+			<p>{{ $order->id }}</p>
 			<p>{{ $delivery['attendance'] }} people</p>
 			<p class="half">{{ $delivery['delivery_by'] }}</p>
 		</div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use Log;
 use FCM;
+use Setting;
+use GoogleCloudPrint;
 use App\Models\Order;
 use Braintree_ClientToken;
 use Braintree_Transaction;
@@ -69,6 +71,10 @@ class OrderPaymentController extends Controller
 
             $delivery = $order->delivery;
 
+            // generate invoice at this point
+            $this->generateInvoice($order);
+            $this->printInvoice($order->id);
+
             return [
                 'menu_items' => $order->menuItems,
                 'order' => $order,
@@ -79,6 +85,39 @@ class OrderPaymentController extends Controller
                 'success' => false
             ];
         }
+    }
+
+    private function printInvoice($id) {
+        if (Setting::get('printer_id')) {
+            GoogleCloudPrint::asPdf()
+                ->file('invoices/' . $id . '.pdf')
+                ->printer(Setting::get('printer_id'))
+                ->send();
+        }
+    }
+
+    private function generateInvoice($order)
+    {
+        // Make this a job
+        $user = Auth::guard('api')->user();
+        $billingAddress = $order->billing;
+        $delivery = $order->delivery;
+        $deliveryLocation = $delivery->location;
+        $deliveryAddress = $deliveryLocation->address;
+        $menuItems = $order->menuItems;
+
+        $data = [
+            'user' => $user,
+            'order' => $order,
+            'menu_items' => $menuItems,
+            'billing_address' => $billingAddress,
+            'delivery' => $delivery,
+            'delivery_location' => $deliveryLocation,
+            'delivery_address' => $deliveryAddress,
+        ];
+
+        PDF::loadView('pdf.invoice', $data)
+            ->save('invoices/' . $order->id . '.pdf');
     }
 
     public function notifyUser($order, $user)

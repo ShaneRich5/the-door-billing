@@ -58,30 +58,31 @@ class OrderController extends Controller
 
     public function invoice($id)
     {
-        $user = Auth::guard('api')->user();
-        $order = Order::find($id);
-        $billingAddress = $order->billing;
-        $delivery = $order->delivery;
-        $deliveryLocation = $delivery->location;
-        $deliveryAddress = $deliveryLocation->address;
-        $menuItems = $order->menuItems;
+        return response()->file('invoices/' . $id . '.pdf');
+        // $user = Auth::guard('api')->user();
+        // $order = Order::find($id);
+        // $billingAddress = $order->billing;
+        // $delivery = $order->delivery;
+        // $deliveryLocation = $delivery->location;
+        // $deliveryAddress = $deliveryLocation->address;
+        // $menuItems = $order->menuItems;
 
-        $invoiceNumber = (string) $order->id;
+        // $invoiceNumber = (string) $order->id;
 
-        $data = [
-            'invoice_number' => $invoiceNumber,
-            'user' => $user,
-            'order' => $order,
-            'menu_items' => $menuItems,
-            'billing_address' => $billingAddress,
-            'delivery' => $delivery,
-            'delivery_location' => $deliveryLocation,
-            'delivery_address' => $deliveryAddress,
-        ];
+        // $data = [
+        //     'invoice_number' => $invoiceNumber,
+        //     'user' => $user,
+        //     'order' => $order,
+        //     'menu_items' => $menuItems,
+        //     'billing_address' => $billingAddress,
+        //     'delivery' => $delivery,
+        //     'delivery_location' => $deliveryLocation,
+        //     'delivery_address' => $deliveryAddress,
+        // ];
 
-        return PDF::loadView('pdf.invoice', $data)
-            ->save('invoices/' . $order->id . '.pdf')
-            ->stream($order->id . '.pdf');
+        // return PDF::loadView('pdf.invoice', $data)
+        //     ->save('invoices/' . $order->id . '.pdf')
+        //     ->stream($order->id . '.pdf');
     }
 
     /**

@@ -25,3 +25,5 @@ Route::resource('orders', 'OrderController');
 Route::resource('categories', 'CategoryController');
 Route::resource('tags', 'TagController');
 Route::get('test', 'HomeController@test');
+
+Route::get('printer', 'PrinterController@settings');

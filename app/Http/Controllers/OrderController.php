@@ -47,13 +47,21 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        $delivery = $order->delivery;
         $user = $order->user;
+        $billing_address = $order->billing;
+        $delivery = $order->delivery;
+        $delivery_location = $delivery->location;
+        $delivery_address = $delivery_location->address;
+        $menu_items = $order->menuItems;
 
         return view('orders.show', [
             'user' => $user,
             'order' => $order,
-            'delivery' => $delivery
+            'delivery_location' => $delivery_location,
+            'billing_address' => $billing_address,
+            'delivery_address' => $delivery_address,
+            'delivery' => $delivery,
+            'menu_items' => $menu_items
         ]);
     }
 

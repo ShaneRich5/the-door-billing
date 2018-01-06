@@ -172,6 +172,8 @@ return [
         Oureastudios\Laravel\BraintreeServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
+        Unisharp\Setting\SettingServiceProvider::class,
+        Bnb\GoogleCloudPrint\LaravelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -235,6 +237,8 @@ return [
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'FCM' => LaravelFCM\Facades\FCM::class,
+        'Setting' => Unisharp\Setting\SettingFacade::class,
+        'GoogleCloudPrint' => Bnb\GoogleCloudPrint\Facades\GoogleCloudPrint::class,
     ],
 
 ];
