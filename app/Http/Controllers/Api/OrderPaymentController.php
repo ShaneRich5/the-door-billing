@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Log;
 use FCM;
+use PDF;
 use Setting;
 use GoogleCloudPrint;
 use App\Models\Order;
