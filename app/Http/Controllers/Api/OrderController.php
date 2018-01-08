@@ -122,7 +122,7 @@ class OrderController extends Controller
 
         $order->subtotal = 18.50 * $attendance;
         $order->tax = $order->subtotal * 8.875 / 100;
-        $order->total = $order->subtotal + $order->tax + $deliveryOptions['cost'];
+        $order->total = $order->subtotal + $order->tax + 35; // $deliveryOptions['cost'];
         $order->save();
 
         Log::info('user deliver_by before formatting: ' . $deliveryOptions['deliver_by']);
@@ -132,6 +132,7 @@ class OrderController extends Controller
         Log::info('user deliver_by after formatting: ' . $deliveryOptions['deliver_by']);
 
         $delivery = new Delivery($deliveryOptions);
+        $delivery->cost = 35.00;
         $delivery->order_id = $order->id;
         $delivery->location_id = $location->id;
         $delivery->save();
