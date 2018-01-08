@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Order Invoice {{ $invoice_number }}</title>
+    <title>Order Invoice {{ $order->id }}</title>
     <style>
 		* {
 			margin: 0;
