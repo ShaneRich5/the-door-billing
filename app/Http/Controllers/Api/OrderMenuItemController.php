@@ -27,79 +27,6 @@ class OrderMenuItemController extends Controller
         ];
     }
 
-    public function test()
-    {
-        return Setting::get('name', 'Computer');
-        // limits the quantity of menu items available on each item
-        // based on the catering limit stipulated
-
-        $categories = Category::all();
-
-        $category_limits = $categories->mapWithKeys(function($category) {
-            return [$category->name => $category->catering_limit];
-        });
-
-        return MenuItem::all()
-        ->map(function($item) {
-            return $item->category;
-        })
-        ->flatten()
-        ->groupBy('name')
-        ->map(function($item, $key) {
-            return collect($item)->count();
-        })
-        ->filter(function($value, $key) use ($category_limits) {
-            $limit = $category_limits[$key];
-            if ($limit == 0) {
-                return false;
-            }
-            return $value > $limit;
-        });
-
-        // categories
-
-        // return MenuItem::all()
-        // ->map(function($item) {
-        //     return $item->category;
-        // })
-        // ->flatten()
-        // ->groupBy('name')
-        // ->map(function($item, $key) {
-        //     return collect($item)->count();
-        // });
-
-        // tags
-
-        $tags = Tag::all();
-
-        $tag_limits = $tags->mapWithKeys(function($tag) {
-            return [$tag->name => $tag->catering_limit];
-        });
-
-        // return $tag_limits->has('meat');
-
-        return MenuItem::all()
-
-        ->map(function($item) {
-            return $item->tags;
-        })
-        ->flatten()
-        ->groupBy('name')
-        ->map(function($item, $key) {
-            return collect($item)->count();
-        })
-        ->map(function($amount, $key) use ($tag_limits) {
-            if ($tag_limits->has($key) && $tag_limits->get($key) > 0) {
-                $limit = $tag_limits->get($key);
-                return $amount >= $limit;
-            } else {
-                return false;
-            }
-        })->reduce(function($carry, $item) {
-            return $carry || $item;
-        }, false) ? 'true' : 'false';
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -154,7 +81,7 @@ class OrderMenuItemController extends Controller
         $tags = Tag::all();
 
         $tag_limits = $tags->mapWithKeys(function($tag) {
-            return [$tag->name => $tag->catering_limit];
+            return [$tag->id => $tag->catering_limit];
         });
 
         return $menuItems
@@ -162,7 +89,7 @@ class OrderMenuItemController extends Controller
             return $item->tags;
         })
         ->flatten()
-        ->groupBy('name')
+        ->groupBy('id')
         ->map(function($item, $key) {
             return collect($item)->count();
         })
@@ -184,7 +111,7 @@ class OrderMenuItemController extends Controller
         $categories = Category::all();
 
         $category_limits = $categories->mapWithKeys(function($category) {
-            return [$category->name => $category->catering_limit];
+            return [$category->id => $category->catering_limit];
         });
 
         return $menuItems
@@ -192,7 +119,7 @@ class OrderMenuItemController extends Controller
             return $item->category;
         })
         ->flatten()
-        ->groupBy('name')
+        ->groupBy('id')
         ->map(function($item, $key) {
             return collect($item)->count();
         })
