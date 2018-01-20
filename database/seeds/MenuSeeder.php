@@ -14,8 +14,8 @@ class MenuSeeder extends Seeder
      */
     public function run()
     {
-        $meat_tag = Tag::create(['name' => 'meat']);
-        $seafood_tag = Tag::create(['name' => 'seafood']);
+        $meat_tag = Tag::create(['name' => 'meat', 'catering_limit' => 4]);
+        $seafood_tag = Tag::create(['name' => 'seafood', 'catering_limit' => 2]);
 
         $chicken = Category::create(['name' => 'Chicken', 'catering_limit' => 1]);
         $red_meat = Category::create(['name' => 'Red Meat', 'catering_limit' => 1]);

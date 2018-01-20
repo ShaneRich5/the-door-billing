@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use Log;
 use App\Models\MenuItem;
+use App\Models\Category;
+use App\Models\Tag;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -22,6 +24,75 @@ class OrderMenuItemController extends Controller
             'order' => $order,
             'menu_items' => $order->menuItems,
         ];
+    }
+
+    public function test()
+    {
+        // limits the quantity of menu items available on each item
+        // based on the catering limit stipulated
+
+        // $categories = Category::all();
+
+        // $category_limits = $categories->mapWithKeys(function($category) {
+        //     return [$category->name => $category->catering_limit];
+        // });
+
+        // return MenuItem::all()
+        // ->map(function($item) {
+        //     return $item->category;
+        // })
+        // ->flatten()
+        // ->groupBy('name')
+        // ->map(function($item, $key) {
+        //     return collect($item)->count();
+        // })->map(function($amount, $key) use ($category_limits) {
+        //     $limit = $category_limits[$key];
+        //     if ($limit <= 0) return true;
+        //     return $category_limits[$key] > $amount;
+        // });
+
+        // categories
+
+        // return MenuItem::all()
+        // ->map(function($item) {
+        //     return $item->category;
+        // })
+        // ->flatten()
+        // ->groupBy('name')
+        // ->map(function($item, $key) {
+        //     return collect($item)->count();
+        // });
+
+        // tags
+
+        $tags = Tag::all();
+
+        $tag_limits = $tags->mapWithKeys(function($tag) {
+            return [$tag->name => $tag->catering_limit];
+        });
+
+        // return $tag_limits->has('meat');
+
+        return MenuItem::all()
+
+        ->map(function($item) {
+            return $item->tags;
+        })
+        ->flatten()
+        ->groupBy('name')
+        ->map(function($item, $key) {
+            return collect($item)->count();
+        })
+        ->map(function($amount, $key) use ($tag_limits) {
+            if ($tag_limits->has($key) && $tag_limits->get($key) > 0) {
+                $limit = $tag_limits->get($key);
+                return $amount >= $limit;
+            } else {
+                return false;
+            }
+        })->reduce(function($carry, $item) {
+            return $carry || $item;
+        }, false) ? 'true' : 'false';
     }
 
     /**

@@ -17,6 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('test', 'Api\OrderMenuItemController@test');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UserController');
@@ -24,6 +26,5 @@ Route::resource('orders', 'OrderController');
 // Route::resource('menu-items', 'MenuItemController');
 Route::resource('categories', 'CategoryController');
 Route::resource('tags', 'TagController');
-Route::get('test', 'HomeController@test');
 
 Route::get('printer', 'PrinterController@settings');
