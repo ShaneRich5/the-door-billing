@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Log;
 use PDF;
 use JWTAuth;
+use Setting;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Address;
@@ -120,9 +121,13 @@ class OrderController extends Controller
 
         $attendance = $deliveryOptions['attendance'];
 
-        $order->subtotal = 18.50 * $attendance;
-        $order->tax = $order->subtotal * 8.875 / 100;
-        $order->total = $order->subtotal + $order->tax + 35; // $deliveryOptions['cost'];
+        $delivery_cost = (float) Setting::get('delivery_cost', '35.00');
+        $per_person_cost = (float) Setting::get('per_person_regular_cost', '18.50');
+        $tax = (float) Setting::get('tax', '8.875');
+
+        $order->subtotal = $per_person_cost * $attendance;
+        $order->tax = $order->subtotal * $tax / 100;
+        $order->total = $order->subtotal + $order->tax + $delivery_cost;
         $order->save();
 
         Log::info('user deliver_by before formatting: ' . $deliveryOptions['deliver_by']);
@@ -132,7 +137,7 @@ class OrderController extends Controller
         Log::info('user deliver_by after formatting: ' . $deliveryOptions['deliver_by']);
 
         $delivery = new Delivery($deliveryOptions);
-        $delivery->cost = 35.00;
+        $delivery->cost = $delivery_cost;
         $delivery->order_id = $order->id;
         $delivery->location_id = $location->id;
         $delivery->save();
@@ -145,10 +150,7 @@ class OrderController extends Controller
             'billing' => $billingAddress
         ];
 
-
-
         return $data;
-
     }
 
     /**

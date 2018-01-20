@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Log;
+use Setting;
 use App\Models\MenuItem;
 use App\Models\Category;
 use App\Models\Tag;
@@ -31,25 +32,28 @@ class OrderMenuItemController extends Controller
         // limits the quantity of menu items available on each item
         // based on the catering limit stipulated
 
-        // $categories = Category::all();
+        $categories = Category::all();
 
-        // $category_limits = $categories->mapWithKeys(function($category) {
-        //     return [$category->name => $category->catering_limit];
-        // });
+        $category_limits = $categories->mapWithKeys(function($category) {
+            return [$category->name => $category->catering_limit];
+        });
 
-        // return MenuItem::all()
-        // ->map(function($item) {
-        //     return $item->category;
-        // })
-        // ->flatten()
-        // ->groupBy('name')
-        // ->map(function($item, $key) {
-        //     return collect($item)->count();
-        // })->map(function($amount, $key) use ($category_limits) {
-        //     $limit = $category_limits[$key];
-        //     if ($limit <= 0) return true;
-        //     return $category_limits[$key] > $amount;
-        // });
+        return MenuItem::all()
+        ->map(function($item) {
+            return $item->category;
+        })
+        ->flatten()
+        ->groupBy('name')
+        ->map(function($item, $key) {
+            return collect($item)->count();
+        })
+        ->filter(function($value, $key) use ($category_limits) {
+            $limit = $category_limits[$key];
+            if ($limit == 0) {
+                return false;
+            }
+            return $value > $limit;
+        });
 
         // categories
 
@@ -104,13 +108,37 @@ class OrderMenuItemController extends Controller
      */
     public function store(Request $request, Order $order)
     {
-
         $items = $request->only('menu_items');
         $ids = $items['menu_items'];
 
-        Log::info('menu items: ' . implode(', ', $ids));
-
         $menuItems = MenuItem::find($ids);
+
+        $itemsAboveCategoryLimit = $this->menuItemsMeetCategoryLimits($menuItems);
+
+        if ( ! $itemsAboveCategoryLimit->isEmpty())
+        {
+            return response()->json([
+                'message' => 'Too many items selected in some categories',
+                'data' => $itemsAboveCategoryLimit
+            ], 400);
+        }
+
+        $itemsAboveTagLimits = $this->menuItemsMeetTagCateringLimits($menuItems);
+
+        if ( $itemsAboveTagLimits->isEmpty() ) {
+            $per_person_cost = (float) Setting::get('per_person_regular_cost', '18.50');
+        } else {
+            $per_person_cost = (float) Setting::get('per_person_high_cost', '20.00');
+        }
+
+        $delivery = $order->delivery;
+        $tax = (float) Setting::get('tax', '8.875');
+
+        // recalculate order and deliver costs
+        $order->subtotal = $per_person_cost * $delivery->attendance;
+        $order->tax = $order->subtotal * $tax / 100;
+        $order->total = $order->subtotal + $order->tax + $delivery->cost;
+        $order->save();
 
         $order->menuItems()->sync($ids);
 
@@ -118,6 +146,62 @@ class OrderMenuItemController extends Controller
             'menu_items' => $order->menuItems()->get(),
             'order' => $order
         ];
+    }
+
+    private function menuItemsMeetTagCateringLimits($menuItems)
+    {
+        $tags = Tag::all();
+
+        $tag_limits = $tags->mapWithKeys(function($tag) {
+            return [$tag->name => $tag->catering_limit];
+        });
+
+        return $menuItems
+        ->map(function($item) {
+            return $item->tags;
+        })
+        ->flatten()
+        ->groupBy('name')
+        ->map(function($item, $key) {
+            return collect($item)->count();
+        })
+        ->filter(function($amount, $key) use ($tag_limits) {
+            if ($tag_limits->has($key) && $tag_limits->get($key) > 0) {
+                $limit = $tag_limits->get($key);
+                return $amount >= $limit;
+            } else {
+                return false;
+            }
+        });
+    }
+
+    private function menuItemsMeetCategoryLimits($menuItems)
+    {
+        // limits the quantity of menu items available on each item
+        // based on the catering limit stipulated
+
+        $categories = Category::all();
+
+        $category_limits = $categories->mapWithKeys(function($category) {
+            return [$category->name => $category->catering_limit];
+        });
+
+        return $menuItems
+        ->map(function($item) {
+            return $item->category;
+        })
+        ->flatten()
+        ->groupBy('name')
+        ->map(function($item, $key) {
+            return collect($item)->count();
+        })
+        ->filter(function($value, $key) use ($category_limits) {
+            $limit = $category_limits[$key];
+            if ($limit == 0) {
+                return false;
+            }
+            return $value > $limit;
+        });
     }
 
     /**
