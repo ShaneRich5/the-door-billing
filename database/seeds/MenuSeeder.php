@@ -18,8 +18,8 @@ class MenuSeeder extends Seeder
         $seafood_tag = Tag::create(['name' => 'seafood', 'catering_limit' => 2]);
 
         $chicken = Category::create(['name' => 'Chicken', 'catering_limit' => 1]);
-        $red_meat = Category::create(['name' => 'Red Meat', 'catering_limit' => 4]);
-        $fish = Category::create(['name' => 'Fish', 'catering_limit' => 4]);
+        $red_meat = Category::create(['name' => 'Red Meat', 'catering_limit' => 1]);
+        $fish = Category::create(['name' => 'Fish', 'catering_limit' => 1]);
         $general = Category::create(['name' => 'General', 'catering_limit' => 0]);
         $vegetables = Category::create(['name' => 'Vegetables', 'catering_limit' => 1]);
         $side = Category::create(['name' => 'Side', 'catering_limit' => 1]);
