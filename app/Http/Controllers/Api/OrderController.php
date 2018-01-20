@@ -154,8 +154,8 @@ class OrderController extends Controller
         Log::info('user deliver_by after formatting: ' . $deliveryOptions['deliver_by']);
 
         Log::info('Creating delivery object');
-        $delivery = new Delivery($deliveryOptions->merge(['cost' => $delivery_cost]));
-        // $delivery->cost = $delivery_cost;
+        $delivery = new Delivery($deliveryOptions);
+        $delivery->cost = $delivery_cost;
         $delivery->order_id = $order->id;
         $delivery->location_id = $location->id;
         $delivery->save();
