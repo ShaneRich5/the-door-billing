@@ -117,18 +117,35 @@ class OrderController extends Controller
         $location->address_id = $deliverAddress->id;
         $location->save();
 
+        Log::info('Retreiving delivery details');
+
         $deliveryOptions = $request->only('details.attendance', 'details.cost', 'details.deliver_by')['details'];
 
+        Log::info('Retreived delivery details');
+
+
+        Log::info('Retreiving attendance');
         $attendance = $deliveryOptions['attendance'];
+        Log::info('Retreived attendance');
 
+        Log::info('Retreiving delivery cost from settings');
         $delivery_cost = (float) Setting::get('delivery_cost', '35.00');
-        $per_person_cost = (float) Setting::get('per_person_regular_cost', '18.50');
-        $tax = (float) Setting::get('tax', '8.875');
+        Log::info('Retreived delivery cost from settings');
 
+        Log::info('Retreiving per person cost from settings');
+        $per_person_cost = (float) Setting::get('per_person_regular_cost', '18.50');
+        Log::info('Retreived per person cost from settings');
+
+        Log::info('Retreiving tax from settings');
+        $tax = (float) Setting::get('tax', '8.875');
+        Log::info('Retreived tax from settings');
+
+        Log::info('Order calculations');
         $order->subtotal = $per_person_cost * $attendance;
         $order->tax = $order->subtotal * $tax / 100;
         $order->total = $order->subtotal + $order->tax + $delivery_cost;
         $order->save();
+        Log::info('Order calculated');
 
         Log::info('user deliver_by before formatting: ' . $deliveryOptions['deliver_by']);
 
@@ -136,11 +153,13 @@ class OrderController extends Controller
 
         Log::info('user deliver_by after formatting: ' . $deliveryOptions['deliver_by']);
 
-        $delivery = new Delivery($deliveryOptions);
-        $delivery->cost = $delivery_cost;
+        Log::info('Creating delivery object');
+        $delivery = new Delivery($deliveryOptions->merge(['cost' => $delivery_cost]));
+        // $delivery->cost = $delivery_cost;
         $delivery->order_id = $order->id;
         $delivery->location_id = $location->id;
         $delivery->save();
+        Log::info('Created delivery object');
 
         $data = [
             'order' => $order,
