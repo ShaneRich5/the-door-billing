@@ -29,7 +29,7 @@ class OrderMenuItemController extends Controller
 
     public function test()
     {
-        return Setting::get('name', 'Shane');
+        return Setting::get('name', 'Computer');
         // limits the quantity of menu items available on each item
         // based on the catering limit stipulated
 
