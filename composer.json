@@ -12,6 +12,7 @@
     ],
     "require": {
         "php": ">=7.0.0",
+        "anlutro/l4-settings": "^0.6.0",
         "barryvdh/laravel-dompdf": "^0.8.1",
         "bnbwebexpertise/laravel-google-cloud-print": "^0.1.2",
         "brozot/laravel-fcm": "^1.2",
@@ -21,8 +22,7 @@
         "laravel/tinker": "~1.0",
         "oureastudios/laravel5-braintree": "dev-master",
         "tightenco/ziggy": "^0.5.0",
-        "tymon/jwt-auth": "dev-develop",
-        "unisharp/laravel-settings": "^2.0"
+        "tymon/jwt-auth": "dev-develop"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
