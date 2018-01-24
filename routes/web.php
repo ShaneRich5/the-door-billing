@@ -27,4 +27,4 @@ Route::resource('orders', 'OrderController');
 Route::resource('categories', 'CategoryController');
 Route::resource('tags', 'TagController');
 
-Route::get('printer', 'PrinterController@settings');
+Route::get('settings', 'SettingsController@settings');
