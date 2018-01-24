@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Setting;
 use Illuminate\Http\Request;
 
-class PrinterController extends Controller
+class SettingsController extends Controller
 {
     public function settings()
     {
