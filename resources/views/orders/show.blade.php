@@ -7,11 +7,11 @@
 	border-radius: 5px;
 }
 
-.row:first {
+.row:first-child {
 	padding: 0 14px;
 }
 
-.row::not(:last) {
+.row::not(:last-child) {
 	border-bottom: 1px solid black;
 }
 
