@@ -13,6 +13,8 @@
 
 	<!-- Styles -->
 	<link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
+
+	@yield('styles')
 </head>
 
 <body>

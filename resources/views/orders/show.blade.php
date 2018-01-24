@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('styles')
 <style>
 .container {
 	background: white;
@@ -16,7 +16,9 @@
 }
 
 </style>
+@endsection
 
+@section('content')
 <div class="container">
 	<div class="row">
 		<h1>Order #{{ $order->id }} <small>{{ $order->status }}</small></h1>
