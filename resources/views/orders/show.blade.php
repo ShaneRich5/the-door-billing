@@ -20,8 +20,9 @@
 
 @section('content')
 <div class="container">
-	<div class="row">
+	<div class="row" style="display: flex; justify-content: space-between;">
 		<h1>Order #{{ $order->id }} <small>{{ $order->status }}</small></h1>
+		<button>Print</button>
 	</div>
 	<div class="row">
 		<div class="col-xs-4">
