@@ -1,6 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+.container {
+	background: white;
+	border-radius: 5px;
+}
+
+.row:first {
+	padding: 0 14px;
+}
+
+.row::not(:last) {
+	border-bottom: 1px solid black;
+}
+
+</style>
+
 <div class="container">
 	<div class="row">
 		<h1>Order #{{ $order->id }} <small>{{ $order->status }}</small></h1>
