@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use Log;
+use Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -13,14 +14,16 @@ class PrintInvoice implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $order;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Order $order)
     {
-        //
+        $this->order = $order;
     }
 
     /**
@@ -31,5 +34,6 @@ class PrintInvoice implements ShouldQueue
     public function handle()
     {
         Log::info('PrintInvoice::handle ran');
+        Log::info('Order: ' . $this->order);
     }
 }

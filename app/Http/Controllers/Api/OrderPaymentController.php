@@ -22,9 +22,9 @@ class OrderPaymentController extends Controller
 {
     public function test()
     {
-        return Order::findOrFail(1);
-        // PrintInvoice::dispatch();
-        // return 'success';
+        $order =  Order::findOrFail(1);
+        PrintInvoice::dispatch($order);
+        return 'success';
     }
 
     public function generatePaymentToken()
