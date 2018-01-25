@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('test', 'Api\OrderPaymentController@test');
+Route::get('test/ethernet', 'Api\OrderPaymentController@ethernetTest');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -28,3 +29,4 @@ Route::resource('categories', 'CategoryController');
 Route::resource('tags', 'TagController');
 
 Route::get('settings', 'SettingsController@settings');
+Route::post('settings/printer', 'SettingsController@printer');

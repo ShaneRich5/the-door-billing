@@ -18,13 +18,52 @@ use LaravelFCM\Message\OptionsBuilder;
 use LaravelFCM\Message\PayloadDataBuilder;
 use LaravelFCM\Message\PayloadNotificationBuilder;
 
+
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\ImagickEscposImage;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+
 class OrderPaymentController extends Controller
 {
+    public function ethernetTest()
+    {
+        if ($printer_id = Setting::get('printer_id'))
+        {
+            $printerIp = $printer_id;
+            $printerPort = 9100;
+
+            $connector = new NetworkPrintConnector($printerIp, $printerPort);
+            $printer = new Printer($connector);
+
+            try {
+                $printer->text("Test\n");
+                $printer->text("-----------------------\n");
+                $printer->text("Body\n");
+                $printer->cut();
+            } finally {
+                $printer -> close();
+            }
+            return 'done';
+        } else {
+            return 'no printer id provided';
+        }
+    }
+
     public function test()
     {
-        $order =  Order::findOrFail(1);
-        PrintInvoice::dispatch($order);
-        return 'success';
+        $order =  Order::find(1);
+
+        $printer_id = Setting::get('printer_id');
+        Log::info('printer_id ' . $printer_id);
+
+        if ($printer_id)
+        {
+            PrintInvoice::dispatch($order);
+            return 'success';
+        } else {
+            return 'printer_id not provided';
+        }
     }
 
     public function generatePaymentToken()
@@ -82,7 +121,7 @@ class OrderPaymentController extends Controller
 
             // generate invoice at this point
             $this->generateInvoice($order);
-            $this->printInvoice($order->id);
+            $this->sendInvoiceToPrinter($order);
 
             return [
                 'menu_items' => $order->menuItems,
@@ -96,12 +135,16 @@ class OrderPaymentController extends Controller
         }
     }
 
-    private function printInvoice($id) {
-        if (Setting::get('printer_id')) {
-            GoogleCloudPrint::asPdf()
-                ->file('invoices/' . $id . '.pdf')
-                ->printer(Setting::get('printer_id'))
-                ->send();
+    private function sendInvoiceToPrinter($order) {
+        $printer_id = Setting::get('printer_id');
+        Log::info('printer_id ' . $printer_id);
+
+        if ($printer_id)
+        {
+            PrintInvoice::dispatch($order);
+            return 'success';
+        } else {
+            return 'printer_id not provided';
         }
     }
 

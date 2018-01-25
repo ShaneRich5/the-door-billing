@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use Log;
+use GoogleCloudPrint;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -24,6 +25,7 @@ class PrintInvoice implements ShouldQueue
     public function __construct(Order $order)
     {
         $this->order = $order;
+        
     }
 
     /**
@@ -35,5 +37,25 @@ class PrintInvoice implements ShouldQueue
     {
         Log::info('PrintInvoice::handle ran');
         Log::info('Order: ' . $this->order);
+
+        $printer_id = Setting::get('printer_id');
+
+        Log::info('printer id: ' . $printer_id);
+
+        if ($printer_id) 
+        {
+            // to test
+            GoogleCloudPrint::asHtml()
+                ->url('https://opensource.org/licenses/MIT')
+                ->printer($printerId)
+                ->send();
+
+            $invoice_url = route('orders.invoice', ['id' => $this->order->id]);
+
+            GoogleCloudPrint::asHtml()
+                ->url($invoice_url)
+                ->printer($printerId)
+                ->send();
+        }
     }
 }
