@@ -10,6 +10,7 @@ use GoogleCloudPrint;
 use App\Models\Order;
 use Braintree_ClientToken;
 use Braintree_Transaction;
+use App\Jobs\PrintInvoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -19,6 +20,12 @@ use LaravelFCM\Message\PayloadNotificationBuilder;
 
 class OrderPaymentController extends Controller
 {
+    public function test()
+    {
+        PrintInvoice::dispatch();
+        return 'success';
+    }
+
     public function generatePaymentToken()
     {
         return [

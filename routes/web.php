@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('test', 'Api\OrderMenuItemController@test');
+Route::get('test', 'Api\OrderPaymentController@test');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
