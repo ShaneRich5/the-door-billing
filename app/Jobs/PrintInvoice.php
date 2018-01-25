@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use Log;
-use Order;
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
