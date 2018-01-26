@@ -57,6 +57,10 @@ class PrintInvoice implements ShouldQueue
                 ->url($invoice_url)
                 ->printer($this->printer_id)
                 ->send();
+
+            Log::info('printed successfully');
+        } else {
+            Log::info('failed to print');
         }
     }
 }
