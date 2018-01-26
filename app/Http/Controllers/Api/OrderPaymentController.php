@@ -52,19 +52,19 @@ class OrderPaymentController extends Controller
 
     public function test()
     {
-        return route('orders.invoice', ['id' => 1]);
-        // $order =  Order::find(1);
+        // return route('orders.invoice', ['id' => 1]);
+        $order =  Order::find(1);
 
-        // $printer_id = Setting::get('printer_id');
-        // Log::info('printer_id ' . $printer_id);
+        $printer_id = Setting::get('printer_id');
+        Log::info('printer_id ' . $printer_id);
 
-        // if ($printer_id)
-        // {
-        //     PrintInvoice::dispatch($order, $printer_id);
-        //     return 'success';
-        // } else {
-        //     return 'printer_id not provided';
-        // }
+        if ($printer_id)
+        {
+            PrintInvoice::dispatch($order, $printer_id);
+            return 'success';
+        } else {
+            return 'printer_id not provided';
+        }
     }
 
     public function generatePaymentToken()
