@@ -59,7 +59,7 @@ class OrderPaymentController extends Controller
 
         if ($printer_id)
         {
-            PrintInvoice::dispatch($order);
+            PrintInvoice::dispatch($order, $printer_id);
             return 'success';
         } else {
             return 'printer_id not provided';
@@ -141,7 +141,7 @@ class OrderPaymentController extends Controller
 
         if ($printer_id)
         {
-            PrintInvoice::dispatch($order);
+            PrintInvoice::dispatch($order, $printer_id);
             return 'success';
         } else {
             return 'printer_id not provided';

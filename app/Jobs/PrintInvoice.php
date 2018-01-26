@@ -17,16 +17,17 @@ class PrintInvoice implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $order;
+    protected $printer_id;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(Order $order, $printer_id)
     {
         $this->order = $order;
-
+        $this->printer_id = $printer_id;
     }
 
     /**
@@ -39,11 +40,9 @@ class PrintInvoice implements ShouldQueue
         Log::info('PrintInvoice::handle ran');
         Log::info('Order: ' . $this->order);
 
-        $printer_id = Setting::get('printer_id');
+        Log::info('printer id: ' . $this->printer_id);
 
-        Log::info('printer id: ' . $printer_id);
-
-        if ($printer_id)
+        if ($this->printer_id)
         {
 
             // to test
