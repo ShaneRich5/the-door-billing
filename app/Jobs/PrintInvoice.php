@@ -48,14 +48,14 @@ class PrintInvoice implements ShouldQueue
             // to test
             GoogleCloudPrint::asHtml()
                 ->url('https://opensource.org/licenses/MIT')
-                ->printer($printerId)
+                ->printer($printer_id)
                 ->send();
 
             $invoice_url = route('orders.invoice', ['id' => $this->order->id]);
 
             GoogleCloudPrint::asHtml()
                 ->url($invoice_url)
-                ->printer($printerId)
+                ->printer($printer_id)
                 ->send();
         }
     }
