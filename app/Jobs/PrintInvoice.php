@@ -39,12 +39,13 @@ class PrintInvoice implements ShouldQueue
         Log::info('PrintInvoice::handle ran');
         Log::info('Order: ' . $this->order);
 
-        $printer_id = Setting::get('printer_id');
+        $printer_id = 'b19cb457-a581-1d1e-d028-c55a0768ad67'; // Setting::get('printer_id');
 
         Log::info('printer id: ' . $printer_id);
 
         if ($printer_id)
         {
+
             // to test
             GoogleCloudPrint::asHtml()
                 ->url('https://opensource.org/licenses/MIT')
