@@ -55,7 +55,7 @@ class PrintInvoice implements ShouldQueue
 
             GoogleCloudPrint::asHtml()
                 ->url($invoice_url)
-                ->printer($printer_id)
+                ->printer($this->printer_id)
                 ->send();
         }
     }
