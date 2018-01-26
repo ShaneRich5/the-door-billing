@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use Log;
+use Setting;
 use GoogleCloudPrint;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
@@ -25,7 +26,7 @@ class PrintInvoice implements ShouldQueue
     public function __construct(Order $order)
     {
         $this->order = $order;
-        
+
     }
 
     /**
@@ -42,7 +43,7 @@ class PrintInvoice implements ShouldQueue
 
         Log::info('printer id: ' . $printer_id);
 
-        if ($printer_id) 
+        if ($printer_id)
         {
             // to test
             GoogleCloudPrint::asHtml()
