@@ -33,7 +33,8 @@ class OrderNoteController extends Controller
             $order->save();
 
             return response()->json([
-                'note' => $note
+                'note' => $note,
+                'order' => $order
             ]);
         } else {
             return response()->json([
