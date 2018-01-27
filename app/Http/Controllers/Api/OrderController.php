@@ -117,49 +117,27 @@ class OrderController extends Controller
         $location->address_id = $deliverAddress->id;
         $location->save();
 
-        Log::info('Retreiving delivery details');
-
         $deliveryOptions = $request->only('details.attendance', 'details.cost', 'details.deliver_by')['details'];
 
-        Log::info('Retreived delivery details');
-
-
-        Log::info('Retreiving attendance');
         $attendance = $deliveryOptions['attendance'];
-        Log::info('Retreived attendance');
 
-        Log::info('Retreiving delivery cost from settings');
         $delivery_cost = (float) Setting::get('delivery_cost', '35.00');
-        Log::info('Retreived delivery cost from settings');
-
-        Log::info('Retreiving per person cost from settings');
         $per_person_cost = (float) Setting::get('per_person_regular_cost', '18.50');
-        Log::info('Retreived per person cost from settings');
-
-        Log::info('Retreiving tax from settings');
         $tax = (float) Setting::get('tax', '8.875');
-        Log::info('Retreived tax from settings');
 
-        Log::info('Order calculations');
         $order->subtotal = $per_person_cost * $attendance;
         $order->tax = $order->subtotal * $tax / 100;
         $order->total = $order->subtotal + $order->tax + $delivery_cost;
         $order->save();
-        Log::info('Order calculated');
 
-        Log::info('user deliver_by before formatting: ' . $deliveryOptions['deliver_by']);
 
         $deliveryOptions['deliver_by'] = Carbon::parse($deliveryOptions['deliver_by'])->toDateTimeString();
 
-        Log::info('user deliver_by after formatting: ' . $deliveryOptions['deliver_by']);
-
-        Log::info('Creating delivery object');
         $delivery = new Delivery($deliveryOptions);
         $delivery->cost = $delivery_cost;
         $delivery->order_id = $order->id;
         $delivery->location_id = $location->id;
         $delivery->save();
-        Log::info('Created delivery object');
 
         $data = [
             'order' => $order,
@@ -201,24 +179,21 @@ class OrderController extends Controller
     {
         $user = Auth::guard('api')->user();
 
+
+        // Get nested data
+        $billingData = $request->only('billing.street', 'billing.city', 'billing.state', 'billing.postal_code')['billing'];
+        $locationData = collect($request->only('location.owner', 'location.name', 'location.phone'))['location'];
+        $deliverAddressData = collect($request->only('delivery.street', 'delivery.city', 'delivery.state', 'delivery.postal_code'))['delivery'];
+        $deliveryOptions = $request->only('details.attendance', 'details.cost', 'details.deliver_by')['details'];
+
         $billingAddress = $order->billing;
 
         if (empty($billingAddress)) {
             $billingAddress = $order->billing()->create(new Address);
         }
 
-        // Get nested billing address
-        $billingData = $request->only('billing.street', 'billing.city', 'billing.state', 'billing.postal_code');
-
         // Extract nested values and create address
-        $billingAddress =  $billingAddress->update($billingData['billing']);
-
-        // Attach billing address to user
-        // $user->addresses()->attach($billingAddress->id);
-
-        $locationData = collect($request->only('location.owner', 'location.name', 'location.phone'))['location'];
-        $deliverAddressData = collect($request->only('delivery.street', 'delivery.city', 'delivery.state', 'delivery.postal_code'))['delivery'];
-
+        $billingAddress =  $billingAddress->update($billingData);
         $delivery = $order->delivery;
         $location = $delivery->location->first();
 
@@ -233,18 +208,33 @@ class OrderController extends Controller
         } else {
             $location->fill($locationData)->save();
         }
-        $delivery->order_id = $order->id;
-        $delivery->location_id = $location->id;
-        $delivery->save($deliverAddressData);
 
         $deliverAddress = $location->address()->update($deliverAddressData);
 
+        // recalculate delivery and order costs
+
+        $attendance = $deliveryOptions['attendance'];
+
+        $delivery_cost = (float) Setting::get('delivery_cost', '35.00');
+        $per_person_cost = (float) Setting::get('per_person_regular_cost', '18.50');
+        $tax = (float) Setting::get('tax', '8.875');
+
+        $order->subtotal = $per_person_cost * $attendance;
+        $order->tax = $order->subtotal * $tax / 100;
+        $order->total = $order->subtotal + $order->tax + $delivery_cost;
+        $order->save();
+
+        $delivery->attendance = $deliveryOptions['attendance'];
+        $delivery->deliver_by = Carbon::parse($deliveryOptions['deliver_by'])->toDateTimeString();
+        $delivery->cost = $delivery_cost;
+        $delivery->order_id = $order->id;
+        $delivery->location_id = $location->id;
+        $delivery->save();
+
+
         return [
             'order' => $order,
-            'location' => $location,
-            'deliver_address' => $deliverAddress,
             'delivery' => $delivery,
-            'billing' => $billingAddress,
         ];
     }
 
