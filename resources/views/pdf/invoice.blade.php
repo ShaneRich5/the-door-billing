@@ -72,7 +72,7 @@
 		<div class="half">
 			<h2>{{ $order->id }}</h2>
 			<h2 style="bottom: 0;">{{ $delivery['attendance'] }} people</h2>
-			<h2 class="half">{{ Carbon\Carbon::parse($delivery['delivery_by'])->setTimezone('America/New_York')->format('M j, Y g:ia e') }}</h2>
+			<h2 class="half">@usdatetime($delivery['deliver_by'])</h2>
 		</div>
 	</div>
 	<div class="row">

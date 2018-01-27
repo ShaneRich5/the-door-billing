@@ -54,6 +54,8 @@ class OrderController extends Controller
         $delivery_address = $delivery_location->address;
         $menu_items = $order->menuItems;
 
+        // return $delivery->deliver_by;
+
         return view('orders.show', [
             'user' => $user,
             'order' => $order,

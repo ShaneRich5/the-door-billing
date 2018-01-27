@@ -18,6 +18,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
+        Blade::directive('usdatetime', function ($expression) {
+            return "<?php
+                echo \Carbon\Carbon::parse($expression)->setTimeZone('America/New_York')->format('M j, Y g:ia');
+            ?>";
+        });
     }
 
     /**

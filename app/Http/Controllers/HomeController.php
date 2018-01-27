@@ -38,7 +38,7 @@ class HomeController extends Controller
         $deliveryAddress = $deliveryLocation->address;
         $menuItems = $order->menuItems;
 
-        return \Carbon\Carbon::parse($delivery['delivery_by'])->format('M j, Y g:ia e');
+        // return \Carbon\Carbon::parse($delivery['delivery_by'])->format('M j, Y g:ia e');
         // return $delivery->deliver_by;
         // return \Carbon\Carbon::parse($delivery['delivery_by'])->setTimezone('America/New_York')->format('M j, Y g:ia e');
 

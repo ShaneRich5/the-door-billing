@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Delivery extends Model
@@ -24,4 +25,9 @@ class Delivery extends Model
     {
         return $this->location()->first();
     }
+
+    // public function getDeliveryByAttribute($value)
+    // {
+
+    // }
 }
