@@ -70,9 +70,9 @@
 			<h2>Deliver By</h2>
 		</div>
 		<div class="half">
-			<p>{{ $order->id }}</p>
-			<p>{{ $delivery['attendance'] }} people</p>
-			<p class="half">{{ $delivery['delivery_by'] }}</p>
+			<h2>{{ $order->id }}</h2>
+			<h2 style="bottom: 0;">{{ $delivery['attendance'] }} people</h2>
+			<h2 class="half">{{ Carbon\Carbon::parse($delivery['delivery_by'])->setTimezone('America/New_York')->format('M j, Y g:ia e') }}</h2>
 		</div>
 	</div>
 	<div class="row">
@@ -112,7 +112,7 @@
 			</table>
 			<h3>Notes</h3>
 			<p>
-				@if($$order['note'])
+				@if( $order['note'])
 					{{ $order['note'] }}
 				@else
 					No additional notes provided.

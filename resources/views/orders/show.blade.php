@@ -42,7 +42,7 @@
 		</div>
 		<div class="col-xs-4">
 			<p><b>Delivery Summary</b></p>
-			<p>Deliver by {{ $delivery->deliver_by }}</p>
+			<p>Deliver by {{ Carbon\Carbon::parse($delivery['delivery_by'])->setTimezone('America/New_York')->format('M j, Y g:ia e') }}</p>
 			<p>Serving {{ $delivery->attendance }} people</p>
 		</div>
 	</div>

@@ -56,6 +56,7 @@ class OrderPaymentController extends Controller
     {
         // return route('orders.invoice', ['id' => 1]);
         $order =  Order::find(1);
+        return $this->generateInvoice($order);
 
         $printer_id = Setting::get('printer_id');
         Log::info('printer_id ' . $printer_id);

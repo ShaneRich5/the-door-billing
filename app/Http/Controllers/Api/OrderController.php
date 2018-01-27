@@ -213,10 +213,17 @@ class OrderController extends Controller
 
         // recalculate delivery and order costs
 
-        $attendance = $deliveryOptions['attendance'];
+        $itemsAboveTagLimits = $this->menuItemsMeetTagCateringLimits($menuItems);
 
+        if ( $itemsAboveTagLimits->isEmpty() ) {
+            $per_person_cost = (float) Setting::get('per_person_regular_cost', '18.50');
+        } else {
+            $per_person_cost = (float) Setting::get('per_person_high_cost', '20.00');
+        }
+
+        $attendance = $deliveryOptions['attendance'];
         $delivery_cost = (float) Setting::get('delivery_cost', '35.00');
-        $per_person_cost = (float) Setting::get('per_person_regular_cost', '18.50');
+        // $per_person_cost = (float) Setting::get('per_person_regular_cost', '18.50');
         $tax = (float) Setting::get('tax', '8.875');
 
         $order->subtotal = $per_person_cost * $attendance;
@@ -246,6 +253,44 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        if ($order->delete()) {
+            return [
+                'success' => true
+            ];
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'failed to delete order'
+            ], 400);
+        }
+    }
+
+    private function menuItemsMeetCategoryLimits($menuItems)
+    {
+        // limits the quantity of menu items available on each item
+        // based on the catering limit stipulated
+
+        $categories = Category::all();
+
+        $category_limits = $categories->mapWithKeys(function($category) {
+            return [$category->id => $category->catering_limit];
+        });
+
+        return $menuItems
+        ->map(function($item) {
+            return $item->category;
+        })
+        ->flatten()
+        ->groupBy('id')
+        ->map(function($item, $key) {
+            return collect($item)->count();
+        })
+        ->filter(function($value, $key) use ($category_limits) {
+            $limit = $category_limits[$key];
+            if ($limit == 0) {
+                return false;
+            }
+            return $value > $limit;
+        });
     }
 }

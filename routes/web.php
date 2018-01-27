@@ -17,8 +17,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('test', 'Api\OrderPaymentController@test');
-Route::get('test/ethernet', 'Api\OrderPaymentController@ethernetTest');
+Route::get('test', 'HomeController@test');
+// Route::get('test', 'Api\OrderPaymentController@test');
+// Route::get('test/ethernet', 'Api\OrderPaymentController@ethernetTest');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
