@@ -41,6 +41,8 @@ class OrderPaymentController extends Controller
                 $printer->text("-----------------------\n");
                 $printer->text("Body\n");
                 $printer->cut();
+            } catch (Exception $e) {
+                echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
             } finally {
                 $printer -> close();
             }

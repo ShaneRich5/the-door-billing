@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateZipCostsTable extends Migration
+class CreateZipCodeCostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateZipCostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('zip_costs', function (Blueprint $table) {
+        Schema::create('zip_code_costs', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('zip_code');
+            $table->integer('cost');
             $table->timestamps();
         });
     }

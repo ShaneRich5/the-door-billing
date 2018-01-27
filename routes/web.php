@@ -30,3 +30,4 @@ Route::resource('tags', 'TagController');
 
 Route::get('settings', 'SettingsController@settings');
 Route::post('settings/printer', 'SettingsController@printer');
+Route::apiResource('zip-code-costs', 'ZipCostController');

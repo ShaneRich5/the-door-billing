@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab50b61d90925248f705868a373f5843",
+    "content-hash": "dfde40df4876fcda349c0c16b4d1b096",
     "packages": [
         {
             "name": "anlutro/l4-settings",
@@ -3527,16 +3527,16 @@
         },
         {
             "name": "tightenco/ziggy",
-            "version": "v0.5.0",
+            "version": "v0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tightenco/ziggy.git",
-                "reference": "a289378d08ee16f573140820eae002cd1616e9ec"
+                "reference": "1d979e8315dda5c03118661b06d3e6356c58fece"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tightenco/ziggy/zipball/a289378d08ee16f573140820eae002cd1616e9ec",
-                "reference": "a289378d08ee16f573140820eae002cd1616e9ec",
+                "url": "https://api.github.com/repos/tightenco/ziggy/zipball/1d979e8315dda5c03118661b06d3e6356c58fece",
+                "reference": "1d979e8315dda5c03118661b06d3e6356c58fece",
                 "shasum": ""
             },
             "require": {
@@ -3574,7 +3574,7 @@
                 }
             ],
             "description": "Generates a Blade directive exporting all of your named Laravel routes. Also provides a nice route() helper function in JavaScript.",
-            "time": "2017-10-30T07:55:42+00:00"
+            "time": "2017-12-21T19:18:07+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
