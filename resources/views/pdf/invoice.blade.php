@@ -51,16 +51,18 @@
 			<h2>Billed To</h2>
 			<p>{{ $user['first_name'] }} {{ $user['last_name']  }}<br>
 			{{ $billing_address['street'] }}<br>
-			{{ $billing_address['city'] }}, {{ $billing_address['state'] }}<br>
+			{{ $billing_address['city'] }}, {{ $billing_address['state'] }} {{ $billing_address['postal_code'] }}<br>
 			<b>{{ $user['phone'] }}</b></p>
 		</div>
 		<div class="quarter">
 			<h2>Deliver To</h2>
-			<p>{{ $delivery_location['owner'] }}<br>
-			{{ $delivery_location['name'] }}<br>
-			{{ $delivery_location['phone']}}<br>
-			{{ $delivery_address['street'] }}<br>
-			{{ $delivery_address['city'] }}, {{ $delivery_address['state'] }}</p>
+			<p>{{ $delivery_location['owner'] }}</p>
+			@if($delivery_location)
+				<p>{{ $delivery_location['name'] }}</p>
+			@endif
+			<p><b>{{ $delivery_location['phone']}}</b></p>
+			<p>{{ $delivery_address['street'] }}</p>
+			<p>{{ $delivery_address['city'] }}, {{ $delivery_address['state'] }} {{ $delivery_address['postal_code'] }}</p>
 		</div>
 		<div class="quarter">
 			<h2>Invoice #</h2>
@@ -77,14 +79,15 @@
 		<div class="half">
 			<h2>Menu Items Inclued</h2>
 			<table>
-				<tr>
-					<th>Name</th>
-				</tr>
-				@foreach($menu_items as $menu_item)
+				@forelse($menu_items as $menu_item)
 				<tr>
 					<td>{{ $menu_item['name'] }}</td>
 				</tr>
-				@endforeach
+				@empty
+				<tr>
+					<td>No items specified.</td>
+				</tr>
+				@endforelse
 			</table>
 		</div>
 		<div class="half">
@@ -108,7 +111,13 @@
 				</tr>
 			</table>
 			<h3>Notes</h3>
-			<p>{{ $order['note'] }}</p>
+			<p>
+				@if($$order['note'])
+					{{ $order['note'] }}
+				@else
+					No additional notes provided.
+				@endif
+			</p>
 		</div>
 	</div>
 </body>
