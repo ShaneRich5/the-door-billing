@@ -1,4 +1,4 @@
-var humps = require('humps');
+var humps = window.humps = require('humps');
 
 window._ = require('lodash');
 

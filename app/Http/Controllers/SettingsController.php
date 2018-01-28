@@ -10,7 +10,8 @@ class SettingsController extends Controller
     public function settings()
     {
         return view('settings.index', [
-            'printer_id' => Setting::get('printer_id', '')
+            'printer_id' => Setting::get('printer_id', ''),
+            'delivery_cost' => Setting::get('delivery_cost')
         ]);
     }
 

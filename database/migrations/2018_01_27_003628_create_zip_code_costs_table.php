@@ -15,7 +15,7 @@ class CreateZipCodeCostsTable extends Migration
     {
         Schema::create('zip_code_costs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('zip_code');
+            $table->string('zip_code')->unique();
             $table->integer('cost');
             $table->timestamps();
         });
